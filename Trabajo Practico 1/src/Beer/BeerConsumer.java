@@ -2,7 +2,7 @@ package Beer;
 
 public class BeerConsumer extends Thread{
 	
-	private BeerHouse bh;
+	private BeerHouse bh; /* Recurso Compartido */
 	private String nombre;
 	
 	public BeerConsumer(String nombre, BeerHouse bh) {
@@ -16,10 +16,10 @@ public class BeerConsumer extends Thread{
 		while(this.bh.getStock() > 0) {
 
 			this.bh.consumir(this.nombre);
-		
+
 		}
 		
-		System.out.println("No hay mas cervezas GIL.");
+		System.out.println("\nLa BeerHouse ya no posee stock de productos.");
 		
 	}
 }
