@@ -1,21 +1,23 @@
 package Beer;
 
 public class BeerProducter extends Thread{
+
+	private BeerHouse bh;
+	private String nombre;
+	
+	public BeerProducter(String nombre, BeerHouse bh) {
+		this.nombre = nombre;
+		this.bh = bh;
+	}
 	
 	@Override
 	public void run() {
 		
-		while(BeerHouse.stock > 0) {
-			
-			if(BeerHouse.stock < 100) {
-				BeerHouse.producir();
+		while(this.bh.getStock() > 0) {	
 
-			}	else {
-				System.out.println("El maximo de cerveza es 100.");
-				notifyAll();
-			}
+			this.bh.producir(this.nombre);
 			
 		}
-		
+	
 	}
 }
