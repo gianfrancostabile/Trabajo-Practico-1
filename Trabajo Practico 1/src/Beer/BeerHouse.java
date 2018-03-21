@@ -2,7 +2,7 @@ package Beer;
 
 public class BeerHouse {
 	
-	private int stock = 20; /* Recurso Compartido */
+	private int stock = 20; 
 	private boolean disponible = true;
 	
 	public synchronized void consumir(String nombre) {
