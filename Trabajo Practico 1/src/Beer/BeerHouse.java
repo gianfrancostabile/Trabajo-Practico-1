@@ -17,11 +17,11 @@ public class BeerHouse {
 			}
 			/* FIN EXCLUSION MUTUA */
 
-			int valorQuitar = (int) Math.floor(Math.random()*9+1);
+			int valorQuitar = (int) Math.floor(Math.random()*this.stock+1);
 			
 			if(this.stock - valorQuitar >= 0) {
 				this.stock = this.stock - valorQuitar;
-				System.out.println("- " + nombre + " consumió " + valorQuitar + " productos. - Stock: " + this.stock);
+				System.out.println("- " + nombre + " consumiÃ³ " + valorQuitar + " productos. - Stock: " + this.stock);
 				
 			}	else {
 				System.out.println("- " + nombre + ", no tenemos " + valorQuitar + " cervezas... Nuestro stock es de " + this.stock + " cervezas.");
@@ -49,10 +49,10 @@ public class BeerHouse {
 			
 			if((this.stock + valorAgregar) < 100) {
 				this.stock = this.stock + valorAgregar;
-				System.out.println("- " + nombre + " creó " + valorAgregar + " productos. - Stock: " + this.stock);
+				System.out.println("- " + nombre + " creÃ³ " + valorAgregar + " productos. - Stock: " + this.stock);
 			
 			}	else {
-				System.out.println("(*) El productor " + nombre + " creó " + valorAgregar + " productos y no se agregaron porque se excede de 100 unidades.");
+				System.out.println("(*) El productor " + nombre + " creÃ³ " + valorAgregar + " productos y no se agregaron porque se excede de 100 unidades.");
 			}
 			
 			this.disponible = true;
