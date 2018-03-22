@@ -3,10 +3,10 @@ package Beer;
 public class BeerConsumer extends Thread{
 	
 	private BeerHouse bh; /* Recurso Compartido */
-	private String nombre;
+	private int id;
 	
-	public BeerConsumer(String nombre, BeerHouse bh) {
-		this.nombre = nombre;
+	public BeerConsumer(int id, BeerHouse bh) {
+		this.id = id;
 		this.bh = bh;
 	}
 	
@@ -14,12 +14,18 @@ public class BeerConsumer extends Thread{
 	public void run() {
 
 		while(this.bh.getStock() > 0) {
-
-			this.bh.consumir(this.nombre);
+			
+			try {
+				
+				this.bh.consumir(this);
+				
+			} catch (InterruptedException e) { }
 
 		}
 		
-		System.out.println("\nLa BeerHouse ya no posee stock de productos.");
-		
+	}
+	
+	public int getIdConsumer() {
+		return this.id;
 	}
 }

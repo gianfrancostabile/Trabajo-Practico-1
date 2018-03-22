@@ -2,63 +2,53 @@ package Beer;
 
 public class BeerHouse {
 	
-	private int stock = 20; 
-	private boolean disponible = true;
+	private int stock = 1;
+	private boolean disponible = false;
 	
-	public synchronized void consumir(String nombre) {
+	public synchronized void consumir(BeerConsumer bc) throws InterruptedException{
 		
 		if(this.stock > 0) {
-
-			/* EXCLUSION MUTUA */
-			while(this.disponible == false) {
-				try {
-					wait();
-				} catch (InterruptedException e) { }
-			}
-			/* FIN EXCLUSION MUTUA */
-
-			int valorQuitar = (int) Math.floor(Math.random()*this.stock+1);
 			
-			if(this.stock - valorQuitar >= 0) {
-				this.stock = this.stock - valorQuitar;
-				System.out.println("- " + nombre + " consumiÃ³ " + valorQuitar + " productos. - Stock: " + this.stock);
+			while(!disponible) {
+				wait();
+			}
+
+			int cantQuitar = (int) Math.floor(Math.random()*this.stock+1);
+			
+			if(this.stock - cantQuitar >= 0) {
+				this.stock = this.stock - cantQuitar;
+				System.out.println("Consumidor #" + bc.getIdConsumer() + " sacó: " + cantQuitar + " - Stock: " + this.stock);
 				
 			}	else {
-				System.out.println("- " + nombre + ", no tenemos " + valorQuitar + " cervezas... Nuestro stock es de " + this.stock + " cervezas.");
+				System.out.println("Consumidor #" + bc.getIdConsumer() + ", no tenemos " + cantQuitar + " cervezas... Nuestro stock es de " + this.stock + " cervezas.");
 				
 			}
 			this.disponible = false;
-
-			notify();
+			
+			notifyAll();
 		}
 	}
 	
-	public synchronized void producir(String nombre) {
+	public synchronized void producir(BeerProducter bp) throws InterruptedException{
 		
 		if(this.stock < 100 && this.stock > 0) {
 
-			/* EXCLUSION MUTUA */
-			while(this.disponible == true) {
-				try {
-					wait();
-				} catch (InterruptedException e) { }
+			while(disponible) {
+				wait();
 			}
-			/* FIN EXCLUSION MUTUA */
 
-			int valorAgregar = (int) Math.floor(Math.random()*9+1);
-			
-			if((this.stock + valorAgregar) < 100) {
-				this.stock = this.stock + valorAgregar;
-				System.out.println("- " + nombre + " creÃ³ " + valorAgregar + " productos. - Stock: " + this.stock);
+			int cantAgregar = (int) Math.floor(Math.random()*9+1);
+			if((this.stock + cantAgregar) < 101) {
+				this.stock = this.stock + cantAgregar;
+				System.out.println("Productor #" + bp.getIdProducter() + " pone: " + cantAgregar + " - Stock: " + this.stock);
 			
 			}	else {
-				System.out.println("(*) El productor " + nombre + " creÃ³ " + valorAgregar + " productos y no se agregaron porque se excede de 100 unidades.");
+				System.out.println("Productor #" + bp.getIdProducter() + " pone: " + cantAgregar + " (No cargado - Máx 100.)");
 			}
 			
 			this.disponible = true;
 			
-			notify();
-		
+			notifyAll();
 		}
 
 	}

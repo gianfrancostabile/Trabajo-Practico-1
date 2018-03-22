@@ -1,12 +1,12 @@
 package Beer;
 
-public class BeerProducter implements Runnable{
+public class BeerProducter extends Thread{
 
 	private BeerHouse bh; /* Recurso Compartido */
-	private String nombre;
+	private int id;
 	
-	public BeerProducter(String nombre, BeerHouse bh) {
-		this.nombre = nombre;
+	public BeerProducter(int id, BeerHouse bh) {
+		this.id = id;
 		this.bh = bh;
 	}
 	
@@ -15,12 +15,16 @@ public class BeerProducter implements Runnable{
 		
 		while(this.bh.getStock() > 0) {	
 			
-			this.bh.producir(this.nombre);
-
 			try {
-				Thread.sleep(750);
-			}   catch (InterruptedException e) {}
+				this.bh.producir(this);
+				Thread.sleep(1000);
+			} catch (InterruptedException e) { }
+
 		}
 	
+	}
+	
+	public int getIdProducter() {
+		return this.id;
 	}
 }
